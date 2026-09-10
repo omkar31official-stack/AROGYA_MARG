@@ -9,7 +9,7 @@ from app.db.seed import seed_database
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
-    title="Arogya Marg API",
+    title="Arogya Marga API",
     description="Patient Journey Orchestration & Public-Health Coordination Platform",
     version="1.0.0",
 )
