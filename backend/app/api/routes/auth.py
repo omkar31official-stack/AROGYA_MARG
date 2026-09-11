@@ -3,10 +3,33 @@ from sqlalchemy.orm import Session
 from datetime import datetime
 from app.db.database import get_db
 from app.models.models import User
-from app.schemas.schemas import LoginRequest, TokenResponse, UserOut
-from app.core.auth import verify_password, create_access_token, get_current_user
+from app.schemas.schemas import LoginRequest, SignupRequest, TokenResponse, UserOut
+from app.core.auth import hash_password, verify_password, create_access_token, get_current_user
 
 router = APIRouter()
+
+@router.post("/signup", response_model=UserOut)
+def signup(data: SignupRequest, db: Session = Depends(get_db)):
+    existing_user = db.query(User).filter(User.email == data.email).first()
+    if existing_user:
+        raise HTTPException(status_code=400, detail="Email already registered")
+    
+    # Generate a random employee_id for now
+    import random
+    emp_id = f"EMP-{random.randint(1000, 9999)}"
+    
+    new_user = User(
+        employee_id=emp_id,
+        name=data.name,
+        email=data.email,
+        password_hash=hash_password(data.password),
+        role=data.role,
+        facility_id=data.facility_id
+    )
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
+    return UserOut.model_validate(new_user)
 
 
 @router.post("/login", response_model=TokenResponse)

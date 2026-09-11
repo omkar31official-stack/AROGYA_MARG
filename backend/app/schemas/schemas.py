@@ -15,6 +15,14 @@ class LoginRequest(BaseModel):
     password: str
 
 
+class SignupRequest(BaseModel):
+    name: str
+    email: EmailStr
+    password: str
+    role: RoleEnum
+    facility_id: Optional[str] = None
+
+
 class TokenResponse(BaseModel):
     access_token: str
     token_type: str = "bearer"
@@ -90,25 +98,25 @@ class PatientCreate(BaseModel):
     name: str
     age: int
     gender: GenderEnum
-    phone: Optional[str]
+    phone: Optional[str] = None
     village: str
-    household_id: Optional[str]
+    household_id: Optional[str] = None
     known_conditions: List[str] = []
     is_pregnant: bool = False
-    trimester: Optional[int]
+    trimester: Optional[int] = None
     medications: List[str] = []
     allergies: List[str] = []
     prev_hospitalization: bool = False
     risk_level: RiskEnum = RiskEnum.LOW
     risk_factors: List[str] = []
     symptoms: List[str] = []
-    temperature: Optional[float]
-    pulse: Optional[int]
-    resp_rate: Optional[int]
-    spo2: Optional[int]
-    bp_systolic: Optional[int]
-    bp_diastolic: Optional[int]
-    weight: Optional[float]
+    temperature: Optional[float] = None
+    pulse: Optional[int] = None
+    resp_rate: Optional[int] = None
+    spo2: Optional[int] = None
+    bp_systolic: Optional[int] = None
+    bp_diastolic: Optional[int] = None
+    weight: Optional[float] = None
     consent_given: bool = False
 
 
